@@ -13,16 +13,20 @@ const messages = [
   "Okay… last chance 😢"
 ];
 
+yesBtn.addEventListener("click", yesClicked);
+noBtn.addEventListener("click", noClicked);
+
 function noClicked() {
   noCount++;
 
-  const x = Math.random() * 200 - 100;
-  const y = Math.random() * 200 - 100;
-  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+  noBtn.style.transform =
+    `translate(${Math.random()*200-100}px, ${Math.random()*200-100}px)`;
 
   yesBtn.style.transform = `scale(${1 + noCount * 0.2})`;
 
-  question.innerText = messages[Math.min(noCount - 1, messages.length - 1)];
+  question.innerText =
+    messages[Math.min(noCount - 1, messages.length - 1)];
+
   reaction.innerText = "My heart is beating faster 💓";
 
   if (noCount >= 6) {
@@ -34,4 +38,42 @@ function noClicked() {
 function yesClicked() {
   document.getElementById("valentineScreen").classList.add("hidden");
   document.getElementById("nextScreen").classList.remove("hidden");
+}
+
+function startMagic() {
+  document.getElementById("nextScreen").classList.add("hidden");
+  document.getElementById("balloonScreen").classList.remove("hidden");
+}
+
+/* Balloon Game */
+let surprises = [
+  { img: "photo1.jpg", text: "You are not just my love — you are my home ❤️" },
+  { img: "photo2.jpg", text: "Growing together with you is my biggest blessing 💍" },
+  { img: "photo3.jpg", text: "Every moment with you feels like magic ✨" }
+];
+
+let remaining = surprises.length;
+
+function popBalloon(index) {
+  if (!surprises[index]) return;
+
+  popupImg.src = surprises[index].img;
+  popupText.innerText = surprises[index].text;
+  popup.classList.remove("hidden");
+
+  surprises[index] = null;
+  remaining--;
+  document.getElementById("remaining").innerText = remaining;
+
+  if (remaining === 0) {
+    setTimeout(() => {
+      popup.classList.add("hidden");
+      document.getElementById("balloonScreen").classList.add("hidden");
+      document.getElementById("finalScreen").classList.remove("hidden");
+    }, 800);
+  }
+}
+
+function closePopup() {
+  popup.classList.add("hidden");
 }
