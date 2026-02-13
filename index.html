@@ -1,71 +1,176 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Be My Valentine 💖</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Be My Valentine 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* { box-sizing: border-box; font-family: Poppins, sans-serif; }
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(180deg,#ffd6e8,#ffc0da);
+  color: #b1004b;
+  text-align: center;
+}
+
+.center {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.hidden { display: none; }
+
+button {
+  padding: 15px 30px;
+  border-radius: 30px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#yesBtn { background:#ff4d88; color:#fff; }
+#noBtn  { background:#eee; color:#444; margin-left:15px; }
+
+.balloons {
+  display: flex;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.balloon {
+  font-size: 70px;
+  cursor: pointer;
+  animation: float 2s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-20px)}
+  100%{transform:translateY(0)}
+}
+
+/* popup created dynamically */
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  width: 280px;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 15px;
+}
+</style>
 </head>
+
 <body>
 
-<!-- SCREEN 1: VALENTINE QUESTION -->
-<section class="center" id="valentineScreen">
-  <h1 id="question">Will you be my Valentine, Shivani? 💕</h1>
+<!-- SCREEN 1 -->
+<section class="center" id="screen1">
+  <h1>Will you be my Valentine, Shivani? 💕</h1>
   <p id="reaction">My heart is waiting… 💗</p>
-
-  <div class="buttons">
+  <div>
     <button id="yesBtn">YES ❤️</button>
     <button id="noBtn">NO 💔</button>
   </div>
 </section>
 
-<!-- SCREEN 2: YAY -->
-<section class="center hidden" id="nextScreen">
+<!-- SCREEN 2 -->
+<section class="center hidden" id="screen2">
   <h1>Yayyyy 😍</h1>
-  <p>I knew you would say YES 💖</p>
   <button onclick="startMagic()">Start the Magic ✨</button>
 </section>
 
-<!-- SCREEN 3: BALLOON GAME -->
-<section class="center hidden" id="balloonScreen">
-  <h1>Pop the balloons, Shivani 🎈</h1>
-  <p><span id="remaining">3</span> surprises remaining 💕</p>
-
+<!-- SCREEN 3 -->
+<section class="center hidden" id="screen3">
+  <h1>Pop the balloons 🎈</h1>
   <div class="balloons">
-    <div class="balloon" onclick="popBalloon(0)">🎈</div>
-    <div class="balloon" onclick="popBalloon(1)">🎈</div>
-    <div class="balloon" onclick="popBalloon(2)">🎈</div>
+    <div class="balloon" onclick="pop(0)">🎈</div>
+    <div class="balloon" onclick="pop(1)">🎈</div>
+    <div class="balloon" onclick="pop(2)">🎈</div>
   </div>
 </section>
 
-<!-- POPUP -->
-<div id="popup" class="popup hidden">
-  <div class="card">
-    <span class="close" onclick="closePopup()">×</span>
-    <img id="popupImg">
-    <p id="popupText"></p>
-  </div>
-</div>
-
-<!-- SCREEN 4: FINAL LETTER -->
-<section class="center hidden" id="finalScreen">
-  <h1>Happy Valentine’s Day, Shivani 💌</h1>
-
-  <div class="letter">
-    <p>
-      From the very beginning to everything we’ve become,  
-      loving you has always felt like home.
-      <br><br>
-      Through every smile, every challenge, and every dream,
-      you’ve been my calm, my strength, and my happiest place.
-      <br><br>
-      Thank you for being my home, my heart, and my forever.
-      <br><br>
-      I love you — always. 💖
-    </p>
-  </div>
+<!-- SCREEN 4 -->
+<section class="center hidden" id="screen4">
+  <h1>Happy Valentine’s Day 💌</h1>
+  <p style="background:#fff;padding:25px;border-radius:20px;max-width:320px">
+    Loving you has always felt like home.  
+    Thank you for being my heart, my calm, and my forever.  
+    <br><br>
+    I love you — always 💖
+  </p>
 </section>
 
-<script src="script.js"></script>
+<script>
+let noCount = 0;
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const reaction = document.getElementById("reaction");
+
+noBtn.onclick = () => {
+  noCount++;
+  noBtn.style.transform =
+    `translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`;
+  yesBtn.style.transform = `scale(${1+noCount*0.2})`;
+  reaction.innerText = "Please say yes 🥺";
+  if(noCount>5) noBtn.style.display="none";
+};
+
+yesBtn.onclick = () => {
+  screen1.classList.add("hidden");
+  screen2.classList.remove("hidden");
+};
+
+function startMagic(){
+  screen2.classList.add("hidden");
+  screen3.classList.remove("hidden");
+}
+
+let left = 3;
+function pop(i){
+  showPopup(
+    ["You are my home ❤️","My biggest blessing 💍","Forever with you 💖"][i],
+    ["photo1.jpg","photo2.jpg","photo3.jpg"][i]
+  );
+  left--;
+  if(left===0){
+    setTimeout(()=>{
+      screen3.classList.add("hidden");
+      screen4.classList.remove("hidden");
+    },800);
+  }
+}
+
+function showPopup(text,img){
+  const p = document.createElement("div");
+  p.className="popup";
+  p.innerHTML=`
+    <div class="card">
+      <img src="${img}">
+      <p>${text}</p>
+      <button onclick="this.closest('.popup').remove()">Close</button>
+    </div>`;
+  document.body.appendChild(p);
+}
+</script>
+
 </body>
 </html>
