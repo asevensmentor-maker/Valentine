@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Happy Valentine's Day 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- START SCREEN -->
+<section id="startScreen" class="center">
+  <h1>Happy Valentine's Day, Shivani ✨</h1>
+  <p>I’ve prepared something special for you 💕</p>
+  <button onclick="startGame()">Start the Magic ✨</button>
+</section>
+
+<!-- BALLOON GAME -->
+<section id="gameScreen" class="hidden">
+  <h2>Pop the balloons, Shivani 🎈</h2>
+  <p><span id="remaining">3</span> surprises remaining</p>
+
+  <div class="balloons">
+    <div class="balloon" onclick="popBalloon(0)">🎈</div>
+    <div class="balloon" onclick="popBalloon(1)">🎈</div>
+    <div class="balloon" onclick="popBalloon(2)">🎈</div>
+  </div>
+</section>
+
+<!-- POPUP CARD -->
+<div id="popup" class="popup hidden">
+  <div class="card">
+    <span class="close" onclick="closePopup()">×</span>
+    <img id="popupImg" />
+    <p id="popupText"></p>
+  </div>
+</div>
+
+<!-- FINAL MESSAGE -->
+<section id="finalScreen" class="hidden center">
+  <h1>Happy Valentine's Day, Shivani 💖</h1>
+  <p class="letter">
+    From the very beginning to everything we’ve become,  
+    loving you has always felt like home.  
+    <br><br>
+    You are my calm, my strength, and my happiest place.  
+    Thank you for being my heart, my home, and my forever.
+    <br><br>
+    I love you — always 💗
+  </p>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
