@@ -1,15 +1,15 @@
-let current = 1;
 const progress = document.getElementById("progress");
+const screens = document.querySelectorAll(".screen");
 
 // Floating hearts
 const bg = document.querySelector(".hearts-bg");
 setInterval(() => {
-  const heart = document.createElement("span");
-  heart.innerHTML = "💖";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.animationDuration = 5 + Math.random() * 5 + "s";
-  bg.appendChild(heart);
-  setTimeout(() => heart.remove(), 10000);
+  const h = document.createElement("span");
+  h.innerHTML = "💖";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.animationDuration = 5 + Math.random() * 5 + "s";
+  bg.appendChild(h);
+  setTimeout(() => h.remove(), 10000);
 }, 500);
 
 // Navigation
@@ -19,7 +19,7 @@ function goTo(n) {
   progress.style.width = (n - 1) * 25 + "%";
 }
 
-// YES / NO logic
+// YES / NO
 let noCount = 0;
 const yesBtn = document.getElementById("yesBtn");
 const noBtn = document.getElementById("noBtn");
@@ -27,8 +27,9 @@ const noBtn = document.getElementById("noBtn");
 yesBtn.onclick = () => goTo(2);
 noBtn.onclick = () => {
   noCount++;
-  noBtn.style.transform = `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px)`;
-  yesBtn.style.transform = `scale(${1 + noCount * 0.2})`;
+  noBtn.style.transform =
+    `translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`;
+  yesBtn.style.transform = `scale(${1 + noCount*0.2})`;
   if (noCount >= 6) noBtn.style.display = "none";
 };
 
@@ -40,19 +41,35 @@ document.querySelectorAll(".heart").forEach(h => {
   };
 });
 
-// Balloon game
+// Balloon game with image reveal
 const balloons = document.getElementById("balloons");
+const popImage = document.getElementById("popImage");
+const images = ["photo1.jpg", "photo2.jpg", "photo3.jpg"];
 let popped = 0;
 
 for (let i = 0; i < 3; i++) {
   const b = document.createElement("div");
   b.className = "balloon";
+
   b.onclick = () => {
+    const pop = document.createElement("div");
+    pop.className = "pop";
+    pop.style.left = b.offsetLeft + "px";
+    pop.style.top = b.offsetTop + "px";
+    balloons.appendChild(pop);
+
+    setTimeout(() => pop.remove(), 600);
     b.remove();
+
+    popImage.querySelector("img").src = images[popped];
+    popImage.classList.remove("hidden");
+
     popped++;
     if (popped === 3) {
-      goTo(5);
-      typeWriter();
+      setTimeout(() => {
+        goTo(5);
+        typeWriter();
+      }, 1200);
     }
   };
   balloons.appendChild(b);
