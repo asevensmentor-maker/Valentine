@@ -14,6 +14,7 @@ body {
   background: linear-gradient(180deg,#ffd6e8,#ffc0da);
   color: #b1004b;
   text-align: center;
+  overflow-x: hidden;
 }
 
 .center {
@@ -32,11 +33,36 @@ button {
   border: none;
   font-size: 16px;
   cursor: pointer;
+  transition: transform .3s;
 }
 
 #yesBtn { background:#ff4d88; color:#fff; }
 #noBtn  { background:#eee; color:#444; margin-left:15px; }
 
+#progress {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  font-size: 22px;
+  z-index: 10;
+}
+
+/* Floating hearts */
+.heart {
+  position: fixed;
+  bottom: -20px;
+  pointer-events: none;
+  animation: floatUp 6s linear forwards;
+  opacity: 0.8;
+  z-index: 1;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0) scale(1); opacity: .9; }
+  100% { transform: translateY(-110vh) scale(1.4); opacity: 0; }
+}
+
+/* Balloons */
 .balloons {
   display: flex;
   gap: 30px;
@@ -55,7 +81,7 @@ button {
   100%{transform:translateY(0)}
 }
 
-/* popup created dynamically */
+/* Popup created dynamically */
 .popup {
   position: fixed;
   inset: 0;
@@ -73,14 +99,19 @@ button {
   width: 280px;
 }
 
-.card img {
-  width: 100%;
-  border-radius: 15px;
+.letter {
+  background: #fff;
+  padding: 25px;
+  border-radius: 20px;
+  max-width: 320px;
+  color: #444;
 }
 </style>
 </head>
 
 <body>
+
+<div id="progress">💘</div>
 
 <!-- SCREEN 1 -->
 <section class="center" id="screen1">
@@ -102,73 +133,107 @@ button {
 <section class="center hidden" id="screen3">
   <h1>Pop the balloons 🎈</h1>
   <div class="balloons">
-    <div class="balloon" onclick="pop(0)">🎈</div>
-    <div class="balloon" onclick="pop(1)">🎈</div>
-    <div class="balloon" onclick="pop(2)">🎈</div>
+    <div class="balloon" onclick="popBalloon(0)">🎈</div>
+    <div class="balloon" onclick="popBalloon(1)">🎈</div>
+    <div class="balloon" onclick="popBalloon(2)">🎈</div>
   </div>
 </section>
 
 <!-- SCREEN 4 -->
 <section class="center hidden" id="screen4">
   <h1>Happy Valentine’s Day 💌</h1>
-  <p style="background:#fff;padding:25px;border-radius:20px;max-width:320px">
-    Loving you has always felt like home.  
-    Thank you for being my heart, my calm, and my forever.  
-    <br><br>
-    I love you — always 💖
-  </p>
+  <div class="letter">
+    <p id="finalText"></p>
+  </div>
 </section>
 
 <script>
+/* Floating hearts */
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "💖";
+  heart.style.left = Math.random()*100 + "vw";
+  heart.style.fontSize = Math.random()*18 + 14 + "px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),6000);
+},700);
+
+/* Valentine logic */
 let noCount = 0;
-const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
 const reaction = document.getElementById("reaction");
+const progress = document.getElementById("progress");
 
 noBtn.onclick = () => {
   noCount++;
   noBtn.style.transform =
     `translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`;
-  yesBtn.style.transform = `scale(${1+noCount*0.2})`;
+  yesBtn.style.transform = `scale(${1 + noCount*0.2})`;
   reaction.innerText = "Please say yes 🥺";
-  if(noCount>5) noBtn.style.display="none";
+  if(noCount > 5) noBtn.style.display = "none";
 };
 
 yesBtn.onclick = () => {
+  progress.innerText = "🎉";
   screen1.classList.add("hidden");
   screen2.classList.remove("hidden");
 };
 
 function startMagic(){
+  progress.innerText = "🎈";
   screen2.classList.add("hidden");
   screen3.classList.remove("hidden");
 }
 
+/* Balloon game */
+let messages = [
+  "You are my home ❤️",
+  "My biggest blessing 💍",
+  "Forever with you 💖"
+];
+
 let left = 3;
-function pop(i){
-  showPopup(
-    ["You are my home ❤️","My biggest blessing 💍","Forever with you 💖"][i],
-    ["photo1.jpg","photo2.jpg","photo3.jpg"][i]
-  );
+function popBalloon(i){
+  event.target.innerText = "💥";
+  event.target.style.transform = "scale(1.3)";
+  showPopup(messages[i]);
   left--;
-  if(left===0){
+  if(left === 0){
     setTimeout(()=>{
+      progress.innerText = "💌";
       screen3.classList.add("hidden");
       screen4.classList.remove("hidden");
+      typeWriter(
+        "Loving you has always felt like home.\n\nThank you for being my heart, my calm, and my forever.\n\nI love you — always 💖"
+      );
     },800);
   }
 }
 
-function showPopup(text,img){
+/* Popup */
+function showPopup(text){
   const p = document.createElement("div");
-  p.className="popup";
-  p.innerHTML=`
+  p.className = "popup";
+  p.innerHTML = `
     <div class="card">
-      <img src="${img}">
       <p>${text}</p>
       <button onclick="this.closest('.popup').remove()">Close</button>
     </div>`;
   document.body.appendChild(p);
+}
+
+/* Typewriter effect */
+function typeWriter(text){
+  const el = document.getElementById("finalText");
+  el.innerHTML = "";
+  let i = 0;
+  const timer = setInterval(()=>{
+    el.innerHTML += text.charAt(i);
+    i++;
+    if(i >= text.length) clearInterval(timer);
+  },40);
 }
 </script>
 
