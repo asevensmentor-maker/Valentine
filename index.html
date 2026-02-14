@@ -47,7 +47,7 @@ button{
   z-index:10;
 }
 
-/* Floating hearts background */
+/* Floating hearts */
 .heart{
   position:fixed;
   bottom:-20px;
@@ -57,8 +57,27 @@ button{
 }
 
 @keyframes floatUp{
-  from{transform:translateY(0) scale(1)}
   to{transform:translateY(-120vh) scale(1.4);opacity:0}
+}
+
+/* Why you */
+.why-card{
+  background:#fff;
+  padding:25px;
+  border-radius:25px;
+  max-width:340px;
+}
+
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+  margin:25px 0;
+}
+
+.why-heart{
+  font-size:60px;
+  cursor:pointer;
 }
 
 /* Balloons */
@@ -71,13 +90,6 @@ button{
 .balloon{
   font-size:70px;
   cursor:pointer;
-  animation:float 2s infinite ease-in-out;
-}
-
-@keyframes float{
-  0%{transform:translateY(0)}
-  50%{transform:translateY(-20px)}
-  100%{transform:translateY(0)}
 }
 
 /* Popup */
@@ -101,46 +113,9 @@ button{
 .card img{
   width:100%;
   border-radius:15px;
-  margin-bottom:10px;
 }
 
-/* Why you page */
-.why-card{
-  background:#fff;
-  padding:25px;
-  border-radius:25px;
-  max-width:340px;
-}
-
-.why-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:18px;
-  margin:25px 0;
-}
-
-.why-heart{
-  font-size:60px;
-  cursor:pointer;
-  transition:.3s;
-}
-
-.why-heart span{
-  display:block;
-  font-size:13px;
-  color:#444;
-  margin-top:6px;
-}
-
-.why-heart:active{
-  transform:scale(1.1);
-}
-
-/* Final page */
-#screen5{
-  background:url("bg-final.jpg") center/cover no-repeat;
-}
-
+/* Final */
 .letter{
   background:rgba(255,255,255,.95);
   padding:25px;
@@ -163,45 +138,42 @@ button{
     <button id="yesBtn">YES ❤️</button>
     <button id="noBtn">NO 💔</button>
   </div>
-</section> 
-  
-<!-- SCREEN 2 : WHY YOU -->
-  <section class="center hidden" id="screen2">
+</section>
+
+<!-- SCREEN 2 -->
+<section class="center hidden" id="screen2">
   <div class="why-card">
     <h2>Why you? 💖</h2>
-    <p>Tap each heart to know</p>
+    <p>Tap each heart</p>
 
     <div class="why-grid">
-      <div class="why-heart" onclick="this.innerHTML='💗<span>You make me smile</span>'">🤍</div>
-      <div class="why-heart" onclick="this.innerHTML='🧡<span>I love being with you</span>'">🤍</div>
-      <div class="why-heart" onclick="this.innerHTML='💖<span>You are my favorite</span>'">🤍</div>
-      <div class="why-heart" onclick="this.innerHTML='💜<span>You mean a lot to me</span>'">🤍</div>
+      <div class="why-heart" onclick="this.innerHTML='💗<br>You make me smile'">🤍</div>
+      <div class="why-heart" onclick="this.innerHTML='🧡<br>I love being with you'">🤍</div>
+      <div class="why-heart" onclick="this.innerHTML='💖<br>You are my favorite'">🤍</div>
+      <div class="why-heart" onclick="this.innerHTML='💜<br>You mean everything'">🤍</div>
     </div>
 
-    <button onclick="goFinal()">Continue 💌</button>
+    <button onclick="goScreen3()">Continue 💌</button>
   </div>
-  </section>
+</section>
 
 <!-- SCREEN 3 -->
 <section class="center hidden" id="screen3">
-  <h1>Yayyyy 😍</h1>
-  <button onclick="startMagic()">Start the Magic ✨</button>
+  <h1>Yayyyyy 😍</h1>
+  <button onclick="goScreen4()">Start the Magic ✨</button>
 </section>
 
 <!-- SCREEN 4 -->
 <section class="center hidden" id="screen4">
   <h1>Pop the balloons 🎈</h1>
   <div class="balloons">
-    <div class="balloon" onclick="popBalloon(0)">🎈</div>
-    <div class="balloon" onclick="popBalloon(1)">🎈</div>
-    <div class="balloon" onclick="popBalloon(2)">🎈</div>
+    <div class="balloon" onclick="popBalloon(this,0)">🎈</div>
+    <div class="balloon" onclick="popBalloon(this,1)">🎈</div>
+    <div class="balloon" onclick="popBalloon(this,2)">🎈</div>
   </div>
 </section>
 
-<!-- SCREEN 4 : WHY YOU -->
-
-
-<!-- SCREEN 5 : FINAL -->
+<!-- SCREEN 5 -->
 <section class="center hidden" id="screen5">
   <h1>Happy Valentine’s Day 💌</h1>
   <div class="letter">
@@ -221,65 +193,54 @@ setInterval(()=>{
   setTimeout(()=>h.remove(),6000);
 },700);
 
-/* Valentine logic */
+/* Screen 1 logic */
 let noCount=0;
-const yesBtn=document.getElementById("yesBtn");
-const noBtn=document.getElementById("noBtn");
-const reaction=document.getElementById("reaction");
-const progress=document.getElementById("progress");
-
-noBtn.onclick=()=>{
-  noCount++;
-  noBtn.style.transform=`translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`;
-  yesBtn.style.transform=`scale(${1+noCount*.2})`;
-  reaction.innerText="Please say yes 🥺";
-  if(noCount>5)noBtn.style.display="none";
-};
-
 yesBtn.onclick=()=>{
   progress.innerText="🎉";
   screen1.classList.add("hidden");
   screen2.classList.remove("hidden");
 };
 
-function startMagic(){
-  progress.innerText="🎈";
+noBtn.onclick=()=>{
+  noCount++;
+  noBtn.style.transform=`translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`;
+  yesBtn.style.transform=`scale(${1+noCount*.15})`;
+  reaction.innerText="Please say yes 🥺";
+  if(noCount>5) noBtn.style.display="none";
+};
+
+/* Navigation */
+function goScreen3(){
+  progress.innerText="✨";
   screen2.classList.add("hidden");
   screen3.classList.remove("hidden");
 }
 
-/* Balloon game */
-const data=[
-  {img:"photo1.jpg",text:"You are my home ❤️"},
-  {img:"photo2.jpg",text:"My biggest blessing 💍"},
-  {img:"photo3.jpg",text:"Forever with you 💖"}
-];
-
-let left=3;
-function popBalloon(i){
-  event.target.innerText="💥";
-  showPopup(data[i]);
-  left--;
-  if(left===0){
-    setTimeout(()=>{
-      progress.innerText="💗";
-      screen3.classList.add("hidden");
-      screen4.classList.remove("hidden");
-    },800);
-  }
+function goScreen4(){
+  progress.innerText="🎈";
+  screen3.classList.add("hidden");
+  screen4.classList.remove("hidden");
 }
 
-/* Popup */
-function showPopup(d){
-  const p=document.createElement("div");
-  p.className="popup";
-  p.innerHTML=`
-    <div class="card">
-      <img src="${d.img}">
-      <p>${d.text}</p>
-      <button onclick="this.closest('.popup').remove()">Close</button>
-    </div>`;
-  document.body.appendChild(p);
+/* Balloon game */
+const data=[
+  "You are my home ❤️",
+  "My biggest blessing 💍",
+  "Forever with you 💖"
+];
+
+let popped=0;
+
+function popBalloon(el,i){
+  if(el.dataset.done) return;
+  el.dataset.done=true;
+  el.innerText="💥";
+  alert(data[i]);
+  popped++;
+
+  if(popped===3){
+    setTimeout(goFinal,800);
+  }
 }
 
 /* Final */
@@ -287,8 +248,9 @@ function goFinal(){
   progress.innerText="💌";
   screen4.classList.add("hidden");
   screen5.classList.remove("hidden");
+
   typeWriter(
-    "Loving you has always felt like home.\n\nThank you for being my heart, my calm, and my forever.\n\nI love you  💖"
+    "Loving you feels like home.\n\nThank you for being my calm, my happiness, and my forever.\n\nI love you 💖"
   );
 }
 
@@ -299,7 +261,7 @@ function typeWriter(text){
   const t=setInterval(()=>{
     el.innerHTML+=text.charAt(i);
     i++;
-    if(i>=text.length)clearInterval(t);
+    if(i>=text.length) clearInterval(t);
   },40);
 }
 </script>
