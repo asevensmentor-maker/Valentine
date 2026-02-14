@@ -6,24 +6,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-*{
-  box-sizing:border-box;
-  font-family:Poppins,Arial,sans-serif;
-}
+*{box-sizing:border-box;font-family:Poppins,Arial,sans-serif}
 
 body{
   margin:0;
   background:linear-gradient(180deg,#ffd6e8,#ffc0da);
-  overflow:hidden;
   color:#b1004b;
-}
-
-/* Progress */
-.progress{
-  height:6px;
-  width:0%;
-  background:#ff4d88;
-  transition:0.4s;
+  overflow:hidden;
 }
 
 /* Screens */
@@ -36,10 +25,7 @@ body{
   align-items:center;
   flex-direction:column;
 }
-
-.screen.active{
-  display:flex;
-}
+.screen.active{display:flex}
 
 /* Buttons */
 button{
@@ -50,183 +36,145 @@ button{
   cursor:pointer;
   margin:10px;
 }
+#yes{background:#ff4d88;color:#fff}
+#no{background:#eee}
 
-#yesBtn{background:#ff4d88;color:#fff;}
-#noBtn{background:#eee;}
-
-/* Hearts background */
-.hearts-bg span{
+/* Floating hearts */
+.hearts span{
   position:absolute;
   bottom:-20px;
   font-size:20px;
   animation:float 8s linear infinite;
 }
-
 @keyframes float{
-  to{transform:translateY(-110vh);opacity:0;}
+  to{transform:translateY(-110vh);opacity:0}
 }
 
-/* Why you hearts */
-.heart-grid{
+/* Why you */
+.grid{
   display:grid;
   grid-template-columns:repeat(2,130px);
   gap:20px;
   margin:20px;
 }
-
 .heart{
-  width:130px;
-  height:130px;
-  background:pink;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  padding:10px;
+  width:130px;height:130px;
+  background:pink;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;padding:10px;
 }
-
-.heart.revealed{
-  background:#ff4d88;
-  color:white;
-}
+.heart.on{background:#ff4d88;color:#fff}
 
 /* Balloons */
-.balloons{
-  display:flex;
-  gap:20px;
-  position:relative;
-}
-
+.balloons{display:flex;gap:20px;position:relative}
 .balloon{
-  width:70px;
-  height:90px;
-  background:red;
-  border-radius:50%;
+  width:70px;height:90px;
+  background:red;border-radius:50%;
   cursor:pointer;
 }
 
 /* Pop burst */
 .pop{
-  position:absolute;
-  width:80px;
-  height:80px;
+  position:absolute;width:80px;height:80px;
   background:radial-gradient(circle,#ff4d88,transparent);
   border-radius:50%;
-  animation:popAnim .6s ease-out forwards;
+  animation:pop .6s forwards;
+}
+@keyframes pop{
+  from{transform:scale(.3);opacity:1}
+  to{transform:scale(1.8);opacity:0}
 }
 
-@keyframes popAnim{
-  from{transform:scale(.3);opacity:1;}
-  to{transform:scale(1.8);opacity:0;}
-}
-
-/* Pop image */
-.pop-image{
+/* Pop card (THIS REPLACES IMAGES) */
+.pop-card{
   margin-top:25px;
-  animation:popIn .6s ease-out forwards;
-  z-index:10;
-}
-
-.pop-image img{
-  width:220px;
+  background:#fff;
+  padding:20px;
   border-radius:20px;
+  width:260px;
   box-shadow:0 10px 25px rgba(0,0,0,.25);
+  animation:popIn .5s ease-out;
 }
-
-.hidden{display:none;}
-
 @keyframes popIn{
-  from{transform:scale(.5);opacity:0;}
-  to{transform:scale(1);opacity:1;}
+  from{transform:scale(.5);opacity:0}
+  to{transform:scale(1);opacity:1}
 }
 
-/* Final page */
+/* Final */
 .final{
   position:relative;
   min-height:100vh;
-  background:url("https://images.unsplash.com/photo-1518199266791-5375a83190b7") center/cover no-repeat;
+  background:
+    linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),
+    linear-gradient(135deg,#ff9a9e,#fad0c4);
   display:flex;
   align-items:center;
   justify-content:center;
 }
-
-.final::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.35);
-}
-
 .letter{
-  position:relative;
-  z-index:2;
-  background:rgba(255,255,255,.92);
+  background:#fff;
   padding:30px;
   border-radius:20px;
-  max-width:500px;
+  max-width:480px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="hearts-bg"></div>
-<div class="progress" id="progress"></div>
+<div class="hearts"></div>
 
-<!-- Screen 1 -->
+<!-- 1 -->
 <section class="screen active" id="s1">
   <h1>Will you be my Valentine 💕</h1>
-  <p>My heart is waiting… 💖</p>
-  <button id="yesBtn">YES ❤️</button>
-  <button id="noBtn">NO 💔</button>
+  <p>My heart is waiting…</p>
+  <button id="yes">YES ❤️</button>
+  <button id="no">NO 💔</button>
 </section>
 
-<!-- Screen 2 -->
+<!-- 2 -->
 <section class="screen" id="s2">
   <h1>Why you? ❤️</h1>
-  <p>Tap each heart 💕</p>
-  <div class="heart-grid">
+  <p>Tap each heart</p>
+  <div class="grid">
     <div class="heart" data="You make me smile 😊"></div>
     <div class="heart" data="I love being with you 🥰"></div>
-    <div class="heart" data="You are my favorite 💖"></div>
+    <div class="heart" data="You are my safe place 💖"></div>
     <div class="heart" data="You mean everything to me 💘"></div>
   </div>
   <button onclick="go(3)">Continue</button>
 </section>
 
-<!-- Screen 3 -->
+<!-- 3 -->
 <section class="screen" id="s3">
   <h1>Yayyyyy 😍</h1>
   <button onclick="go(4)">Start the Magic ✨</button>
 </section>
 
-<!-- Screen 4 -->
+<!-- 4 -->
 <section class="screen" id="s4">
   <h1>Pop the balloons 🎈</h1>
   <div class="balloons" id="balloons"></div>
-  <div class="pop-image hidden" id="popImg">
-    <img src="">
-  </div>
+  <div id="card"></div>
 </section>
 
-<!-- Screen 5 -->
+<!-- 5 -->
 <section class="screen final" id="s5">
   <div class="letter">
     <h1>Happy Valentine’s Day 💌</h1>
-    <p id="finalText"></p>
+    <p id="text"></p>
   </div>
 </section>
 
 <script>
 /* Floating hearts */
-const bg=document.querySelector(".hearts-bg");
+const hbg=document.querySelector(".hearts");
 setInterval(()=>{
   const h=document.createElement("span");
-  h.innerHTML="💖";
+  h.textContent="💖";
   h.style.left=Math.random()*100+"vw";
   h.style.animationDuration=5+Math.random()*5+"s";
-  bg.appendChild(h);
+  hbg.appendChild(h);
   setTimeout(()=>h.remove(),10000);
 },500);
 
@@ -234,33 +182,78 @@ setInterval(()=>{
 function go(n){
   document.querySelector(".screen.active").classList.remove("active");
   document.getElementById("s"+n).classList.add("active");
-  progress.style.width=(n-1)*25+"%";
 }
 
 /* YES / NO */
-let noCount=0;
-yesBtn.onclick=()=>go(2);
-noBtn.onclick=()=>{
-  noCount++;
-  noBtn.style.transform=`translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`;
-  yesBtn.style.transform=`scale(${1+noCount*.2})`;
-  if(noCount>5) noBtn.style.display="none";
+let n=0;
+yes.onclick=()=>go(2);
+no.onclick=()=>{
+  n++;
+  no.style.transform=`translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`;
+  yes.style.transform=`scale(${1+n*.2})`;
+  if(n>5)no.style.display="none";
 };
 
-/* Why you hearts */
+/* Why you */
 document.querySelectorAll(".heart").forEach(h=>{
   h.onclick=()=>{
-    h.textContent=h.getAttribute("data");
-    h.classList.add("revealed");
+    h.textContent=h.dataset;
+    h.classList.add("on");
   }
 });
 
-/* Balloon game */
-const balloons=document.getElementById("balloons");
-const popImg=document.getElementById("popImg");
-const imgs=[
- "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70",
- "https://images.unsplash.com/photo-1500648767791-00dcc994a43e",
- "https://images.unsplash.com/photo-1518199266791-5375a83190b7"
+/* Balloon game — GUARANTEED VISUAL */
+const msgs=[
+  "You are my home ❤️",
+  "My favorite person 💫",
+  "Forever my love 💖"
 ];
-let popped
+const balloons=document.getElementById("balloons");
+const card=document.getElementById("card");
+let p=0;
+
+for(let i=0;i<3;i++){
+  const b=document.createElement("div");
+  b.className="balloon";
+  b.onclick=()=>{
+    const pop=document.createElement("div");
+    pop.className="pop";
+    pop.style.left=b.offsetLeft+"px";
+    pop.style.top=b.offsetTop+"px";
+    balloons.appendChild(pop);
+    setTimeout(()=>pop.remove(),600);
+    b.remove();
+
+    card.innerHTML=`<div class="pop-card">💖<br>${msgs[p]}</div>`;
+    p++;
+
+    if(p===3){
+      setTimeout(()=>{go(5);type();},1200);
+    }
+  };
+  balloons.appendChild(b);
+}
+
+/* Final typing */
+const t=document.getElementById("text");
+const msg=
+"Loving you isn’t just a feeling — it’s my favorite adventure.\n\n"+
+"In your smiles I find joy.\n"+
+"In your hard days, I promise my strength.\n\n"+
+"No matter what happens,\n"+
+"I am here — with you, for you, always.\n\n"+
+"You are my today,\nmy tomorrow,\nand every heartbeat in between.\n\n"+
+"Forever yours ❤️✨";
+
+let i=0;
+function type(){
+  if(i<msg.length){
+    t.textContent+=msg.charAt(i);
+    i++;
+    setTimeout(type,40);
+  }
+}
+</script>
+
+</body>
+</html>
