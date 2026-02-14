@@ -8,13 +8,10 @@
 </head>
 <body>
 
-<!-- Floating hearts background -->
 <div class="hearts-bg"></div>
-
-<!-- Progress bar -->
 <div class="progress" id="progress"></div>
 
-<!-- Screen 1 -->
+<!-- 1 -->
 <section class="screen active" id="screen1">
   <h1>Will you be my Valentine 💕</h1>
   <p>My heart is waiting… 💖</p>
@@ -24,35 +21,37 @@
   </div>
 </section>
 
-<!-- Screen 2 -->
+<!-- 2 -->
 <section class="screen" id="screen2">
   <h1>Why you? ❤️</h1>
   <p>Tap each heart 💕</p>
-
   <div class="heart-grid">
     <div class="heart" data-text="You make me smile 😊"></div>
     <div class="heart" data-text="I love being with you 🥰"></div>
     <div class="heart" data-text="You are my favorite 💖"></div>
     <div class="heart" data-text="You mean everything to me 💘"></div>
   </div>
-
   <button onclick="goTo(3)">Continue</button>
 </section>
 
-<!-- Screen 3 -->
+<!-- 3 -->
 <section class="screen" id="screen3">
   <h1>Yayyyyy 😍</h1>
   <button onclick="goTo(4)">Start the Magic ✨</button>
 </section>
 
-<!-- Screen 4 -->
+<!-- 4 -->
 <section class="screen" id="screen4">
   <h1>Pop the balloons 🎈</h1>
   <p>Pop all balloons!</p>
   <div class="balloons" id="balloons"></div>
+
+  <div class="pop-image hidden" id="popImage">
+    <img src="" alt="Love memory">
+  </div>
 </section>
 
-<!-- Screen 5 -->
+<!-- 5 -->
 <section class="screen final" id="screen5">
   <div class="letter">
     <h1>Happy Valentine’s Day 💌</h1>
